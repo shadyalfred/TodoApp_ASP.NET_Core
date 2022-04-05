@@ -9,7 +9,7 @@ public class SeedDb
     {
         SeedRoles(serviceProvider).Wait();
         SeedUsers(serviceProvider).Wait();
-        SeedTodos(serviceProvider);
+        SeedTodos(serviceProvider).Wait();
     }
 
     private static async Task SeedRoles(IServiceProvider serviceProvider)
@@ -58,13 +58,30 @@ public class SeedDb
         }
     }
 
-    private static void SeedTodos(IServiceProvider serviceProvider)
+    private static async Task SeedTodos(IServiceProvider serviceProvider)
     {
+        var db = serviceProvider.GetRequiredService<ApplicationDbContext>();
+
+        if (db.Todos.Any())
+        {
+            return;
+        }
+
+        var userManager = serviceProvider.GetRequiredService<UserManager<User>>();
+
+        User user = await userManager.FindByEmailAsync("user@users.com");
         Todo[] todos = new Todo[]
         {
-            new Todo() { Title = "First todo", Body = "Buy milk" },
-            new Todo() { Title = "Second todo", Body = "Buy cheese" },
-            new Todo() { Title = "Third todo", Body = "Buy flour" },
+            new Todo() { Title = "First todo", Body = "Buy milk", OwnerId = user.Id },
+            new Todo() { Title = "Second todo", Body = "Buy cheese", OwnerId = user.Id },
+            new Todo() { Title = "Third todo", Body = "Buy flour", OwnerId = user.Id },
         };
+
+        foreach (var todo in todos)
+        {
+            db.Todos.Add(todo);
+        }
+
+        db.SaveChanges();
     }
 }
