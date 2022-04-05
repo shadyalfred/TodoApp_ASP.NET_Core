@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace TodoApp.Data.Migrations
+namespace TodoApp.Migrations
 {
     public partial class Initialize : Migration
     {

@@ -9,10 +9,10 @@ using TodoApp.Data;
 
 #nullable disable
 
-namespace TodoApp.Data.Migrations
+namespace TodoApp.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20220405131414_Initialize")]
+    [Migration("20220405165054_Initialize")]
     partial class Initialize
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

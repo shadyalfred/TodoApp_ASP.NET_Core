@@ -8,7 +8,7 @@ using TodoApp.Data;
 
 #nullable disable
 
-namespace TodoApp.Data.Migrations
+namespace TodoApp.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
     partial class ApplicationDbContextModelSnapshot : ModelSnapshot
