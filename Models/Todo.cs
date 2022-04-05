@@ -1,5 +1,4 @@
 using System.ComponentModel.DataAnnotations;
-using Microsoft.AspNetCore.Identity;
 
 namespace TodoApp.Models;
 
@@ -16,5 +15,5 @@ public class Todo
     [Required]
     public string OwnerId { get; set; } = string.Empty;
 
-    public virtual IdentityUser Owner { get; set; } = default!;
+    public virtual User Owner { get; set; } = default!;
 }
