@@ -30,7 +30,6 @@ namespace TodoApp.Controllers
         {
             
             return View((await _userManager.GetUsersInRoleAsync("User")).ToList());
-            // return View(await _context.Users.ToListAsync());
         }
 
         // GET: Users/Details/5
