@@ -46,7 +46,7 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Todo.Id)
+                #
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Todo.Title)
@@ -64,12 +64,14 @@
         </tr>
     </thead>
     <tbody>
+@{int i = 1;}
 @foreach (var todo in Model!.Todos) {
         <tr
             class="@(todo.IsDone ? "done" : "")"
         >
             <td>
-                @Html.DisplayFor(modelItem => todo.Id)
+                @i
+                @{i++;}
             </td>
             <td>
                 @Html.DisplayFor(modelItem => todo.Title)

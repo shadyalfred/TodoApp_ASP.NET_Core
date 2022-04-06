@@ -20,7 +20,15 @@ public class SeedDb
         if (adminRole is null)
         {
             adminRole = new IdentityRole("Admin");
-            roleManager.CreateAsync(adminRole).Wait();
+            await roleManager.CreateAsync(adminRole);
+        }
+
+        IdentityRole userRole = await roleManager.FindByNameAsync("User");
+
+        if (userRole is null)
+        {
+            userRole = new IdentityRole("User");
+            await roleManager.CreateAsync(userRole);
         }
     }
 
@@ -40,9 +48,9 @@ public class SeedDb
             admin.Email = "admin@admin.com";
             admin.EmailConfirmed = true;
 
-            userManager.CreateAsync(admin, "P@ssword0").Wait();
+            await userManager.CreateAsync(admin, "P@ssword0");
 
-            userManager.AddToRoleAsync(admin, "Admin").Wait();
+            await userManager.AddToRoleAsync(admin, "Admin");
         }
 
         User user = await userManager.FindByEmailAsync("user@users.com");
@@ -55,6 +63,7 @@ public class SeedDb
             user.EmailConfirmed = true;
 
             await userManager.CreateAsync(user, "P@ssword0");
+            await userManager.AddToRoleAsync(user, "User");
         }
     }
 
