@@ -16,3 +16,23 @@ html {
 body {
   margin-bottom: 60px;
 }
+
+table tbody tr.done td:not(:last-child) {
+  text-decoration: line-through;
+  color: grey;
+}
+
+.form-group {
+  margin-top: 5px;
+  margin-bottom: 5px;
+}
+
+.form-group .form-control {
+  margin-top: 5px;
+  margin-bottom: 5px;
+}
+
+.form-floating {
+  margin-top: 5px;
+  margin-bottom: 5px;
+}

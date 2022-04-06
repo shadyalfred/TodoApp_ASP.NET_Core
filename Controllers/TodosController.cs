@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using TodoApp.Data;
 using TodoApp.Models;
 using Microsoft.AspNetCore.Identity;
+using TodoApp.ViewModels.Todos;
 
 namespace TodoApp
 {
@@ -29,7 +30,12 @@ namespace TodoApp
 
             todos = todos.OrderByDescending(t => t.CreatedAt);
 
-            return View(await todos.ToListAsync());
+            var indexCreateModel = new IndexCreate()
+            {
+                Todos = await todos.ToListAsync()
+            };
+
+            return View(indexCreateModel);
         }
 
         // GET: Todos/Details/5
@@ -91,7 +97,6 @@ namespace TodoApp
             {
                 return NotFound();
             }
-            ViewData["OwnerId"] = new SelectList(_context.Users, "Id", "Id", todo.OwnerId);
             return View(todo);
         }
 
@@ -100,18 +105,32 @@ namespace TodoApp
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Title,Body,IsDone,OwnerId,CreatedAt")] Todo todo)
+        public async Task<IActionResult> Edit(int id, [Bind("Title,Body,IsDone")] Todo todo)
         {
-            if (id != todo.Id)
-            {
-                return NotFound();
-            }
+            var todoToUpdate = await _context.Todos.FindAsync(id);
 
+            todoToUpdate.Title = todo.Title;
+            todoToUpdate.Body = todo.Body;
+            todoToUpdate.IsDone = todo.IsDone;
+
+            ModelState.Clear();
+            TryValidateModel(todoToUpdate);
+
+            foreach (var error in ModelState)
+            {
+                System.Console.WriteLine($"error key: {error.Key}");
+                foreach (var e in error.Value.Errors)
+                {
+                    System.Console.WriteLine("\t" + e.ErrorMessage);
+                }
+            }
+            
             if (ModelState.IsValid)
             {
                 try
                 {
-                    _context.Update(todo);
+                    _context.Update(todoToUpdate);
+
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
@@ -127,7 +146,6 @@ namespace TodoApp
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["OwnerId"] = new SelectList(_context.Users, "Id", "Id", todo.OwnerId);
             return View(todo);
         }
 

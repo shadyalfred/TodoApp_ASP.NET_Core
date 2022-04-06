@@ -1,57 +1,86 @@
-@model IEnumerable<TodoApp.Models.Todo>
+@model TodoApp.ViewModels.Todos.IndexCreate
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Todos";
 }
 
-<h1>Index</h1>
+<h1>Todos</h1>
 
 <p>
     <a asp-action="Create">Create New</a>
 </p>
+
+<div class="row mb-3">
+    <div class="col">
+        <div class="card bg-warning bg-opacity-50">
+            <div class="card-body">
+                <h5 class="card-title">Add a todo</h5>
+                <form asp-action="Create">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <div class="form-group">
+                        <label asp-for="Todo.Title" class="control-label"></label>
+                        <input asp-for="Todo.Title" class="form-control" />
+                        <span asp-validation-for="Todo.Title" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Todo.Body" class="control-label"></label>
+                        <input asp-for="Todo.Body" class="form-control" />
+                        <span asp-validation-for="Todo.Body" class="text-danger"></span>
+                    </div>
+                    <div class="form-group form-check">
+                        <label class="form-check-label">
+                            <input class="form-check-input" asp-for="Todo.IsDone" /> @Html.DisplayNameFor(model =>
+                            model.Todo.IsDone)
+                        </label>
+                    </div>
+                    <div class="form-group text-center">
+                        <input type="submit" value="Add" class="btn btn-primary" />
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
 <table class="table">
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Title)
+                @Html.DisplayNameFor(model => model.Todo.Title)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Body)
+                @Html.DisplayNameFor(model => model.Todo.Body)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.IsDone)
+                @Html.DisplayNameFor(model => model.Todo.IsDone)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.CreatedAt)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Owner)
+                @Html.DisplayNameFor(model => model.Todo.CreatedAt)
             </th>
             <th></th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
+@foreach (var todo in Model!.Todos) {
+        <tr
+            class="@(todo.IsDone ? "done" : "")"
+        >
             <td>
-                @Html.DisplayFor(modelItem => item.Title)
+                @Html.DisplayFor(modelItem => todo.Title)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Body)
+                @Html.DisplayFor(modelItem => todo.Body)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.IsDone)
+                @Html.DisplayFor(modelItem => todo.IsDone)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.CreatedAt)
+                @Html.DisplayFor(modelItem => todo.CreatedAt)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Owner.Id)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                <a asp-action="Edit" asp-route-id="@todo.Id">Edit</a> |
+                <a asp-action="Details" asp-route-id="@todo.Id">Details</a> |
+                <a asp-action="Delete" asp-route-id="@todo.Id">Delete</a>
             </td>
         </tr>
 }
