@@ -46,6 +46,9 @@
     <thead>
         <tr>
             <th>
+                @Html.DisplayNameFor(model => model.Todo.Id)
+            </th>
+            <th>
                 @Html.DisplayNameFor(model => model.Todo.Title)
             </th>
             <th>
@@ -65,6 +68,9 @@
         <tr
             class="@(todo.IsDone ? "done" : "")"
         >
+            <td>
+                @Html.DisplayFor(modelItem => todo.Id)
+            </td>
             <td>
                 @Html.DisplayFor(modelItem => todo.Title)
             </td>
