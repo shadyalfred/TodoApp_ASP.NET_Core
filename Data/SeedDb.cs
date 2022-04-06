@@ -53,7 +53,7 @@ public class SeedDb
             await userManager.AddToRoleAsync(admin, "Admin");
         }
 
-        User user = await userManager.FindByEmailAsync("user@users.com");
+        User? user = (await userManager.GetUsersInRoleAsync("User")).FirstOrDefault();
 
         if (user is null)
         {
@@ -78,7 +78,7 @@ public class SeedDb
 
         var userManager = serviceProvider.GetRequiredService<UserManager<User>>();
 
-        User user = await userManager.FindByEmailAsync("user@users.com");
+        User user = (await userManager.GetUsersInRoleAsync("User")).First();
         Todo[] todos = new Todo[]
         {
             new Todo() { Title = "First todo", Body = "Buy milk", OwnerId = user.Id },
